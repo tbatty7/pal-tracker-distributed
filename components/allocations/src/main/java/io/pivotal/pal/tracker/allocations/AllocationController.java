@@ -24,6 +24,7 @@ public class AllocationController {
     public AllocationController(AllocationDataGateway gateway, ProjectClient client) {
         this.gateway = gateway;
         this.client = client;
+        
     }
 
 
