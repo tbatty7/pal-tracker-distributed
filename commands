@@ -1,0 +1,42 @@
+curl -i -XPOST -H"Content-Type: application/json" localhost:8083/registration -d'{"name": "Pete"}'
+curl -i localhost:8083/users/${USER_ID}
+curl -i localhost:8083/accounts?ownerId=${USER_ID}
+curl -i -XPOST -H"Content-Type: application/json" localhost:8083/projects -d"{\"name\": \"Basket Weaving\", \"accountId\": ${ACCOUNT_ID}}"
+
+curl -i localhost:8083/projects?accountId=${ACCOUNT_ID}
+curl -i -XPOST -H"Content-Type: application/json" localhost:8081/allocations -d"{\"projectId\": ${PROJECT_ID}, \"userId\": ${USER_ID}, \"firstDay\": \"2015-05-17\", \"lastDay\": \"2015-05-18\"}"
+
+curl -i localhost:8081/allocations?projectId=${PROJECT_ID}
+curl -i -XPOST -H"Content-Type: application/json" localhost:8082/stories -d"{\"projectId\": ${PROJECT_ID}, \"name\": \"Find some reeds\"}"
+
+curl -i localhost:8082/stories?projectId=${PROJECT_ID}
+curl -i -XPOST -H"Content-Type: application/json" localhost:8084/time-entries/ -d"{\"projectId\": ${PROJECT_ID}, \"userId\": ${USER_ID}, \"date\": \"2015-05-17\", \"hours\": 6}"
+
+curl -i localhost:8084/time-entries?userId=${USER_ID}
+
+/////////////////////PCF
+
+curl -i -XPOST -H"Content-Type: application/json" http://registration-pal-awesome-route.apps.pikes.pal.pivotal.io/registration -d'{"name": "Perl"}'
+curl -i http://registration-pal-awesome-route.apps.pikes.pal.pivotal.io/users/7
+curl -i http://registration-pal-awesome-route.apps.pikes.pal.pivotal.io/accounts?ownerId=7
+
+curl -i -XPOST -H"Content-Type: application/json" http://registration-pal-awesome-route.apps.pikes.pal.pivotal.io/projects -d"{\"name\": \"Basket Weaving\", \"accountId\": 7}"
+curl -i http://registration-pal-awesome-route.apps.pikes.pal.pivotal.io/projects?accountId=7
+
+curl -i -XPOST -H"Content-Type: application/json" http://allocations-pal-awesome-route.apps.pikes.pal.pivotal.io/allocations -d"{\"projectId\": 4, \"userId\": 7, \"firstDay\": \"2015-05-17\", \"lastDay\": \"2015-05-18\"}"
+curl -i http://allocations-pal-awesome-route.apps.pikes.pal.pivotal.io/allocations?projectId=4
+
+curl -i -XPOST -H"Content-Type: application/json" http://backlog-pal-awesome-route.apps.pikes.pal.pivotal.io/stories -d"{\"projectId\": 4, \"name\": \"Find some reeds\"}"
+curl -i http://backlog-pal-awesome-route.apps.pikes.pal.pivotal.io/stories?projectId=4
+
+curl -i -XPOST -H"Content-Type: application/json" http://timesheets-pal-awesome-route.apps.pikes.pal.pivotal.io/time-entries/ -d"{\"projectId\": 4, \"userId\": 7, \"date\": \"2015-05-17\", \"hours\": 6}"
+
+curl -i http://timesheets-pal-awesome-route.apps.pikes.pal.pivotal.io/time-entries?userId=1
+
+//////////////////////////////// assignment
+
+./gradlew cloudNativeDeveloperDistributedSystemDeployment \
+    -PregistrationServerUrl=https://registration-pal-awesome-route.apps.pikes.pal.pivotal.io \
+    -PbacklogServerUrl=https://backlog-pal-awesome-route.apps.pikes.pal.pivotal.io \
+    -PallocationsServerUrl=https://allocations-pal-awesome-route.apps.pikes.pal.pivotal.io \
+    -PtimesheetsServerUrl=https://timesheets-pal-awesome-route.apps.pikes.pal.pivotal.io
